@@ -20,11 +20,16 @@ var gamecycle={
 		group:group,
 		counter:0,
 		difficulty:0,
+    frameCount:0,
 		
 		// state transition
 		state:50,  
 		stateFirstIteration:true, 
 		
+    step: function() {
+      this.frameCount++;
+    },
+    
 		hud:{},
 		
 		/**
@@ -210,7 +215,7 @@ var gamecycle={
 
 		stateIsReady:function() { this.stateFirstIteration=false; },
 
-		blit:function() {
+		draw:function() {
 			switch (this.state) {
 
 				// Disclaimer
