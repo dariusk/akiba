@@ -252,12 +252,13 @@ var toys={
 				}
 			}
 		},
-		// Helper: trigger a method in colliding objects (i.e. "use action")
-		callInColliding:function(th,data) {
-			for (var i in gbox._objects[data.group])
-				if ((!gbox._objects[data.group][i].initialize)&&toys.pixelcollides(data,gbox._objects[data.group][i]))
-					if (gbox._objects[data.group][i][data.call]) {
-						gbox._objects[data.group][i][data.call](th);
+		// pre: object, group, callback function name as string (must exist in object)
+    // post: if obj collides with an object of group, "callback" inside the group object is called and passed obj
+		callOnCollideGroup:function(obj,group,callback) {
+			for (var i in gbox._objects[group])
+				if ((!gbox._objects[group][i].initialize)&&toys.collides(obj,gbox._objects[group][i]))
+					if (gbox._objects[group][i][callback]) {
+						gbox._objects[group][i][callback](obj);
 						return i;
 					}
 			return false;
