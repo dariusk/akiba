@@ -23,10 +23,7 @@ var toys={
 	FACE_RIGHT:1,
 	FACE_DOWN:2,
 	FACE_LEFT:3,
-	
-	// Top-view (Zelda-alike) specifics
-	
-	topview:{
+
 		collides:function(fr,to,t) { // Special collision. Counts also the Z
 			if (Math.abs(fr.z,to.z)<5) return gbox.collides({x:fr.x+fr.colx,y:fr.y+fr.coly,h:fr.colh,w:fr.colw},{x:to.x+to.colx,y:to.y+to.coly,h:to.colh,w:to.colw},t); else return false;
 		},
@@ -66,7 +63,7 @@ var toys={
 			th.colhh=Math.floor(th.colh/2);
 			th.colhw=Math.floor(th.colw/2);
 			
-			toys.topview.spawn(th);
+			toys.spawn(th);
 		},
 		spawn:function(th,data) {
 			th.xpushing=toys.PUSH_NONE; // user is moving side
@@ -127,11 +124,11 @@ var toys={
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxacc,th.maxacc); },
 		getNextZ:function(th) { return th.z+help.limit(th.accz,-th.maxacc,th.maxacc); },
 		applyForces:function(th) {
-			th.x=toys.topview.getNextX(th);
-			th.y=toys.topview.getNextY(th);
+			th.x=toys.getNextX(th);
+			th.y=toys.getNextY(th);
 		},
 		applyGravity:function(th) {
-			th.z=toys.topview.getNextZ(th);
+			th.z=toys.getNextZ(th);
 		},
 		handleAccellerations:function(th) {
 			if (!th.xpushing) th.accx=help.goToZero(th.accx);
@@ -199,22 +196,22 @@ var toys={
 		spritewallCollision:function(th,data) {
 			var wl;
 			for (var i in gbox._objects[data.group])
-				if ((!gbox._objects[data.group][i].initialize)&&toys.topview.collides(th,gbox._objects[data.group][i])) {
+				if ((!gbox._objects[data.group][i].initialize)&&toys.collides(th,gbox._objects[data.group][i])) {
 					wl=gbox._objects[data.group][i];
-					if (toys.topview.pixelcollides({x:th.x+th.colx,y:th.y+th.coly+th.colhh},wl)) {
+					if (toys.pixelcollides({x:th.x+th.colx,y:th.y+th.coly+th.colhh},wl)) {
 						th.touchedleft=true;
 						th.accx=0;
 						th.x=wl.x+wl.colx+wl.colw-th.colx;
-					} else if (toys.topview.pixelcollides({x:th.x+th.colx+th.colw,y:th.y+th.coly+th.colhh},wl)) {
+					} else if (toys.pixelcollides({x:th.x+th.colx+th.colw,y:th.y+th.coly+th.colhh},wl)) {
 						th.touchedright=true;
 						th.accx=0;
 						th.x=wl.x+wl.colx-th.colw-th.colx;
 					}
-					if (toys.topview.pixelcollides({x:th.x+th.colx+th.colhw,y:th.y+th.coly+th.colh},wl)) {
+					if (toys.pixelcollides({x:th.x+th.colx+th.colhw,y:th.y+th.coly+th.colh},wl)) {
 						th.toucheddown=true;
 						th.accy=0;
 						th.y=wl.y+wl.coly-th.colh-th.coly;
-					} else if (toys.topview.pixelcollides({x:th.x+th.colx+th.colhw,y:th.y+th.coly},wl)) {
+					} else if (toys.pixelcollides({x:th.x+th.colx+th.colhw,y:th.y+th.coly},wl)) {
 						th.touchedup=true;
 						th.accy=0;
 						th.y=wl.y+wl.coly+wl.colh-th.coly;
@@ -258,7 +255,7 @@ var toys={
 		// Helper: trigger a method in colliding objects (i.e. "use action")
 		callInColliding:function(th,data) {
 			for (var i in gbox._objects[data.group])
-				if ((!gbox._objects[data.group][i].initialize)&&toys.topview.pixelcollides(data,gbox._objects[data.group][i]))
+				if ((!gbox._objects[data.group][i].initialize)&&toys.pixelcollides(data,gbox._objects[data.group][i]))
 					if (gbox._objects[data.group][i][data.call]) {
 						gbox._objects[data.group][i][data.call](th);
 						return i;
@@ -360,19 +357,19 @@ var toys={
 			);
 			
 			obj.initialize=function() {
-				toys.topview.initialize(this);
+				toys.initialize(this);
 			};
 			
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				this.cnt=(this.cnt+1)%10;
 				
-				if (this.applyzgravity) toys.topview.handleGravity(this); // z-gravity					
-				toys.topview.applyForces(this); // Apply forces
-				if (this.applyzgravity) toys.topview.applyGravity(this); // z-gravity
-				if (this.map!=null) toys.topview.tileCollision(this,this.map,this.mapindex,this.defaulttile); // tile collisions
-				if (this.spritewalls!=null) toys.topview.spritewallCollision(this,{group:this.spritewalls}); // walls collisions
-				if (this.applyzgravity) toys.topview.floorCollision(this); // Collision with the floor (for z-gravity)
-				toys.topview.adjustZindex(this);
+				if (this.applyzgravity) toys.handleGravity(this); // z-gravity					
+				toys.applyForces(this); // Apply forces
+				if (this.applyzgravity) toys.applyGravity(this); // z-gravity
+				if (this.map!=null) toys.tileCollision(this,this.map,this.mapindex,this.defaulttile); // tile collisions
+				if (this.spritewalls!=null) toys.spritewallCollision(this,{group:this.spritewalls}); // walls collisions
+				if (this.applyzgravity) toys.floorCollision(this); // Collision with the floor (for z-gravity)
+				toys.adjustZindex(this);
 				if (this.duration!=null) {
 					this.duration--;
 					if (this.duration==0) gbox.trashObject(this);
@@ -381,7 +378,7 @@ var toys={
 				else if (this.toucheddown||this.touchedup||this.touchedleft||this.touchedright) this.onWallHit();
 				else if (this.collidegroup!=null)
 					for (var i in gbox._objects[this.collidegroup])
-						if ((!gbox._objects[this.collidegroup][i].initialize)&&toys.topview.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
+						if ((!gbox._objects[this.collidegroup][i].initialize)&&toys.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
 							if (gbox._objects[this.collidegroup][i]["hitByBullet"]!=null)
 								if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
 									this.spark(this);
@@ -451,7 +448,7 @@ var toys={
 			
 			obj.initialize=function() {
 				this.ismoving=false;
-				toys.topview.initialize(this);
+				toys.initialize(this);
 			};
 			
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
@@ -499,8 +496,7 @@ var toys={
 			th.staticspeed=speed;
 			th.x=Math.round(th.x/speed)*speed;
 			th.y=Math.round(th.y/speed)*speed;
-		}
-	},
+		},
 	
 	
 	// Shoot'em up specifics
