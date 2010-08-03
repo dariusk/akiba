@@ -230,7 +230,7 @@ var gbox={
 	_groups:[],
 	_renderorder:[],
 	_groupplay:{},
-	_actionqueue:["first","then","blit","after"], // initialize is executed once
+	_actionqueue:["step","then","draw","post"], // initialize is executed once
 	_mspf:0,
 	_fps:0,
 	_gametimer:0,
