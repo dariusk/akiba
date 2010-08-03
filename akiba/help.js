@@ -285,8 +285,8 @@ var help={
 	akihabaraInit:function(data) {
 		if ((typeof data).toLowerCase() == "string") data={title:data};
 		var device=this.getDeviceConfig();
-		var footnotes=["MADE WITH AKIHABARA (C)2010 - GPL2/MIT","Project: www.kesiev.com/akihabara","Sources: github.com/kesiev/akihabara"];
-		document.title=(data.title?data.title:"Akihabara");
+		var footnotes=["MADE WITH AKIBA (C)2010 - GPL2/MIT","Website: none","Source: github.com/dariusk/akiba"];
+		document.title=(data.title?data.title:"Akiba");
 		if (data.splash) {
 			if (data.splash.footnotes) 
 				for (var i=0;i<footnotes.length;i++) data.splash.footnotes.push(footnotes[i]);
