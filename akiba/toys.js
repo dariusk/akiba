@@ -53,7 +53,7 @@ var toys={
 						flipside:true,
 						haspushing:false,
 						frame:0,
-						colh:gbox.getTiles(th.tileset).tilehh,
+						colh:gbox.getTiles(th.tileset).tileh,
 						colw:gbox.getTiles(th.tileset).tilew,
 						colx:0,
 						staticspeed:0,
