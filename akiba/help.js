@@ -295,7 +295,7 @@ var help={
 		var screenwidth=(data.width?data.width:(data.portrait?240:320));
 		var screenheight=(data.height?data.height:(data.portrait?320:240));
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
-		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
+		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akiba/splash.png"});
 		if (!data.splash||(data.splash.minimalTime==null)) gbox.setSplashSettings({minimalTime:3000});
 		if (!data.splash||(data.splash.footnotes==null)) gbox.setSplashSettings({footnotes:footnotes});
 		document.body.style.backgroundColor="#000000";
@@ -338,14 +338,14 @@ var help={
 			else if ((help.geturlparameter("touch")=="yes")||device.touch)
 				switch (data.padmode) {
 					case "fretboard": {
-						iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});		
+						iphofretboard.initialize({h:100,bg:"akiba/fretboard.png"});		
 						break;
 					}
 					case "none": {
 						break;
 					}
 					default: {
-						iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});		
+						iphopad.initialize({h:100,dpad:"akiba/dpad.png",buttons:"akiba/buttons.png",bg:"akiba/padbg.png"});		
 						break;
 					}
 				}
